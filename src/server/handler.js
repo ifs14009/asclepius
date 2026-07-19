@@ -9,13 +9,13 @@ async function postPredictHandler(request, h) {
     
     // Check if image exists and is a stream from hapi
     if (!image || !image.hapi) {
-      throw new InputError('Terjadi kesalahan dalam melakukan prediksi');
+      throw new InputError('VALIDATION_ERROR: image atau image.hapi tidak ditemukan. Body: ' + typeof image);
     }
 
     // Validate MIME type
     const contentType = image.hapi.headers['content-type'];
     if (!contentType || (!contentType.startsWith('image/') && !contentType.includes('image/jpeg') && !contentType.includes('image/png'))) {
-      throw new InputError('Terjadi kesalahan dalam melakukan prediksi');
+      throw new InputError('VALIDATION_ERROR: Tipe konten ditolak. Menerima: ' + contentType);
     }
 
     // Convert stream to Buffer
@@ -59,7 +59,7 @@ async function postPredictHandler(request, h) {
     if (error instanceof InputError || error.name === 'InputError') {
       const response = h.response({
         status: 'fail',
-        message: error.message
+        message: 'DEBUG: ' + error.message // Membocorkan error spesifik ke frontend untuk debug
       });
       response.code(error.statusCode || 400);
       return response;
