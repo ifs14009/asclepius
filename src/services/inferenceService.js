@@ -1,3 +1,10 @@
+// Polyfill for util.isNullOrUndefined (removed in Node.js 24+)
+// Must appear before require('@tensorflow/tfjs-node')
+const _util = require('util');
+if (typeof _util.isNullOrUndefined !== 'function') {
+  _util.isNullOrUndefined = (v) => v === null || v === undefined;
+}
+
 const tf = require('@tensorflow/tfjs-node');
 const InputError = require('../exceptions/InputError');
 
