@@ -1,0 +1,17 @@
+runtime: nodejs20
+
+handlers:
+- url: /favicon\.png
+  static_files: favicon.png
+  upload: favicon\.png
+
+- url: /src
+  static_dir: src
+
+- url: /
+  static_files: index.html
+  upload: index\.html
+
+- url: /.*
+  static_files: index.html
+  upload: index\.html
