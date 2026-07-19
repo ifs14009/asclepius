@@ -55,6 +55,7 @@ async function postPredictHandler(request, h) {
     response.code(201);
     return response;
   } catch (error) {
+    console.error('ERROR PREDIKSI:', error); // Log the actual error to Cloud Run
     if (error instanceof InputError || error.name === 'InputError') {
       const response = h.response({
         status: 'fail',
