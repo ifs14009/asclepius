@@ -1,3 +1,10 @@
+// Polyfill for util.isNullOrUndefined removed in Node.js 20+
+// Required by @tensorflow/tfjs-node@^3.x which uses this legacy Node.js util API.
+const util = require('util');
+if (typeof util.isNullOrUndefined !== 'function') {
+  util.isNullOrUndefined = (value) => value === null || value === undefined;
+}
+
 require('dotenv').config();
 
 const Hapi = require('@hapi/hapi');
