@@ -20,8 +20,7 @@ async function predictClassification(model, imageBuffer) {
 
     return { confidenceScore, label, suggestion };
   } catch (error) {
-    console.error('ERROR TENSORFLOW:', error); // Log actual tensorflow error
-    throw new InputError('TF_ERROR: ' + error.message);
+    throw new InputError('Terjadi kesalahan dalam melakukan prediksi');
   }
 }
 
