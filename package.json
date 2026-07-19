@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "description": "Asclepius adalah sistem pemeriksaan kulit secara otomatis",
   "scripts": {
-    "start": "node src/server/server.js",
+    "start": "node --require ./polyfill.js src/server/server.js",
     "start-frontend": "http-server ."
   },
   "keywords": [],
@@ -15,13 +15,14 @@
   "dependencies": {
     "@google-cloud/firestore": "^8.6.0",
     "@hapi/hapi": "^21.4.9",
-    "@tensorflow/tfjs-node": "^4.22.0",
+    "@tensorflow/tfjs-node": "^3.21.1",
     "dotenv": "^17.4.2",
     "form-data": "^4.0.6",
     "node-fetch": "^2.7.0",
     "uuid": "^14.0.1"
   },
   "engines": {
-    "node": "18.x"
+    "node": ">=18.16"
   }
 }
+
