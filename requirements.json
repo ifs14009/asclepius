@@ -1,6 +1,6 @@
 {
   "backend-service-url": "https://asclepius-backend-287074785289.asia-southeast1.run.app",
-  "frontend-service-url": "isi_dengan_url_frontend_yang_valid",
+  "frontend-service-url": "https://submissionmlgc-ranty.as.r.appspot.com",
   "project-id": "submissionmlgc-ranty",
   "bucket-name": "asclepius-model-ranty"
 }
