@@ -6,15 +6,15 @@ const InputError = require('../exceptions/InputError');
 async function postPredictHandler(request, h) {
   try {
     const { image } = request.payload || {};
-    
-    // Check if image exists and is a stream from hapi
-    if (!image || !image.hapi) {
+
+    // Check if image exists and is a readable stream uploaded via multipart (has .hapi metadata)
+    if (!image || typeof image.pipe !== 'function' || !image.hapi) {
       throw new InputError('Terjadi kesalahan dalam melakukan prediksi');
     }
 
-    // Validate MIME type
-    const contentType = image.hapi.headers['content-type'];
-    if (!contentType || (!contentType.startsWith('image/') && !contentType.includes('image/jpeg') && !contentType.includes('image/png'))) {
+    // Validate MIME type — must be an image type
+    const contentType = image.hapi.headers['content-type'] || '';
+    if (!contentType.startsWith('image/')) {
       throw new InputError('Terjadi kesalahan dalam melakukan prediksi');
     }
 
@@ -44,7 +44,7 @@ async function postPredictHandler(request, h) {
       createdAt: createdAt
     };
 
-    // Store in firestore
+    // Store in Firestore
     await storeData(id, data);
 
     const response = h.response({
@@ -55,28 +55,38 @@ async function postPredictHandler(request, h) {
     response.code(201);
     return response;
   } catch (error) {
-    console.error('ERROR PREDIKSI:', error); // Log the actual error to Cloud Run
+    console.error('ERROR PREDIKSI:', error);
     if (error instanceof InputError || error.name === 'InputError') {
       const response = h.response({
         status: 'fail',
-        message: 'DEBUG: ' + error.message // Membocorkan error spesifik ke frontend untuk debug
+        message: error.message
       });
       response.code(error.statusCode || 400);
       return response;
     }
-    // If it's a different error, pass it to server.js
+    // Re-throw other errors to be handled by onPreResponse
     throw error;
   }
 }
 
 async function getHistoriesHandler(request, h) {
-  const histories = await getHistories();
-  const response = h.response({
-    status: 'success',
-    data: histories
-  });
-  response.code(200);
-  return response;
+  try {
+    const histories = await getHistories();
+    const response = h.response({
+      status: 'success',
+      data: histories
+    });
+    response.code(200);
+    return response;
+  } catch (error) {
+    console.error('ERROR HISTORIES:', error);
+    const response = h.response({
+      status: 'fail',
+      message: 'Gagal mengambil riwayat prediksi'
+    });
+    response.code(500);
+    return response;
+  }
 }
 
 module.exports = { postPredictHandler, getHistoriesHandler };
