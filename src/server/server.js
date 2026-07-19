@@ -1,3 +1,11 @@
+// Polyfill: util.isNullOrUndefined was removed in Node.js 24+
+// @tensorflow/tfjs-node@3.x still calls it at runtime (e.g. during decodeImage).
+// Must run BEFORE any other require, especially before TensorFlow loads.
+const _util = require('util');
+if (typeof _util.isNullOrUndefined !== 'function') {
+  _util.isNullOrUndefined = (v) => v === null || v === undefined;
+}
+
 require('dotenv').config();
 
 const Hapi = require('@hapi/hapi');
