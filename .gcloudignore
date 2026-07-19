@@ -1,0 +1,11 @@
+.gcloudignore
+.git
+.gitignore
+node_modules
+package.json
+package-lock.json
+src/server
+src/services
+src/exceptions
+README.md
+requirements.json
