@@ -9,13 +9,13 @@ async function postPredictHandler(request, h) {
     
     // Check if image exists and is a stream from hapi
     if (!image || !image.hapi) {
-      throw new InputError('VALIDATION_ERROR: image atau image.hapi tidak ditemukan. Body: ' + typeof image);
+      throw new InputError('Terjadi kesalahan dalam melakukan prediksi');
     }
 
     // Validate MIME type
     const contentType = image.hapi.headers['content-type'];
     if (!contentType || (!contentType.startsWith('image/') && !contentType.includes('image/jpeg') && !contentType.includes('image/png'))) {
-      throw new InputError('VALIDATION_ERROR: Tipe konten ditolak. Menerima: ' + contentType);
+      throw new InputError('Terjadi kesalahan dalam melakukan prediksi');
     }
 
     // Convert stream to Buffer
