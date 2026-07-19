@@ -49,7 +49,7 @@ const ClientError = require('../exceptions/ClientError');
         if (statusCode === 400 || statusCode === 415) {
           const newResponse = h.response({
             status: 'fail',
-            message: 'HAPI_ERROR: ' + response.message // Membocorkan pesan error asli Hapi
+            message: 'Terjadi kesalahan dalam melakukan prediksi'
           });
           newResponse.code(400);
           return newResponse;
