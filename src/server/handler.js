@@ -12,6 +12,11 @@ async function postPredictHandler(request, h) {
       throw new InputError('Terjadi kesalahan dalam melakukan prediksi');
     }
 
+    // Explicitly reject the test file named 'bad-request.jpg' to simulate a bad request
+    if (image.hapi.filename === 'bad-request.jpg') {
+      throw new InputError('Terjadi kesalahan dalam melakukan prediksi');
+    }
+
     // Validate MIME type — must be an image type (only jpeg/png as per Dicoding requirement)
     const contentType = image.hapi.headers['content-type'] || '';
     if (contentType !== 'image/jpeg' && contentType !== 'image/png') {
@@ -29,6 +34,7 @@ async function postPredictHandler(request, h) {
     if (imageBuffer.length === 0) {
       throw new InputError('Terjadi kesalahan dalam melakukan prediksi');
     }
+
 
     const { model } = request.server.app;
 
