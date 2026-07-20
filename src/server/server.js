@@ -21,6 +21,7 @@ const ClientError = require('../exceptions/ClientError');
 
   server.route(routes);
 
+
   server.ext('onPreResponse', function (request, h) {
     const response = request.response;
 
