@@ -56,16 +56,14 @@ async function postPredictHandler(request, h) {
     return response;
   } catch (error) {
     console.error('ERROR PREDIKSI:', error);
-    if (error instanceof InputError || error.name === 'InputError') {
-      const response = h.response({
-        status: 'fail',
-        message: error.message
-      });
-      response.code(error.statusCode || 400);
-      return response;
-    }
-    // Re-throw other errors to be handled by onPreResponse
-    throw error;
+    
+    // Always return 400 for prediction errors
+    const response = h.response({
+      status: 'fail',
+      message: error.message || 'Terjadi kesalahan dalam melakukan prediksi'
+    });
+    response.code(400);
+    return response;
   }
 }
 
