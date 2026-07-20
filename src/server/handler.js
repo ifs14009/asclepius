@@ -12,9 +12,9 @@ async function postPredictHandler(request, h) {
       throw new InputError('Terjadi kesalahan dalam melakukan prediksi');
     }
 
-    // Validate MIME type — must be an image type
+    // Validate MIME type — must be an image type (only jpeg/png as per Dicoding requirement)
     const contentType = image.hapi.headers['content-type'] || '';
-    if (!contentType.startsWith('image/')) {
+    if (contentType !== 'image/jpeg' && contentType !== 'image/png') {
       throw new InputError('Terjadi kesalahan dalam melakukan prediksi');
     }
 
